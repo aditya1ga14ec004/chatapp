@@ -10,22 +10,29 @@ const MongoStore = require('connect-mongo')(session);
 const mongoose = require('mongoose');
 const flash = require('connect-flash');
 const passport = require('passport');
+const socketIO = require('socket.io');
+const {Users} = require('./helpers/UsersClass');
 
-
-
-container.resolve(function(users, _){
+container.resolve(function( users, _, admin, home, group ){
     const app = setupExpress();
     function setupExpress(){
         const app = express();
         const server = http.createServer(app);
+        const io = socketIO(server);
         server.listen(3000,function(){
             console.log('Listening on port 3000');
         });
         ConfigureExpress(app);
-            //Setup router
-    const router = require('express-promise-router')();
-    users.SetRouting(router);
-    app.use(router);
+        require('./socket/groupchat')(io, Users);
+        
+
+        //Setup router
+        const router = require('express-promise-router')();
+        users.SetRouting(router);
+        admin.SetRouting(router);
+        home.SetRouting(router);
+        group.SetRouting(router);
+        app.use(router);
         
     }
 
@@ -33,8 +40,7 @@ container.resolve(function(users, _){
     function ConfigureExpress(app){
         require('./passport/passport-local');
         require('./passport/passport-facebook');
-        require('./passport/passport-google');
-
+        require('./passport/passport-google');      
 
         mongoose.Promise = global.Promise;
         mongoose.connect('mongodb://localhost/chatapp',{useMongoClient: true});
@@ -57,7 +63,6 @@ container.resolve(function(users, _){
         
         app.locals._ = _;
     }
-    
     
 });
 

@@ -4,7 +4,10 @@ const path = require('path');
 const container = dependable.container();
 
 const simpleDependencies = [
-    ['_','lodash'],['passport','passport']
+    ['_','lodash'],['passport','passport'],['formidable','formidable'],
+    ['async','async'],
+    ['Club','./models/clubs'],
+    ['aws','./helpers/AWSUpload'],
 ];
 simpleDependencies.forEach(function(val){
     container.register(val[0],function(){
