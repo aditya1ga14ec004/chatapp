@@ -2,7 +2,7 @@ module.exports = function(io, Users){
     
     const users = new Users();
     
-    io.on('connection',(socket)=>{
+    io.on('connection',(socket)=>{ 
         console.log('user connected');
         
         socket.on('join', (params, callback)=>{
@@ -12,7 +12,8 @@ module.exports = function(io, Users){
             callback();
         });
 
-        socket.on('createMessage', (message,callback)=>{             io.to(message.room).emit('newMessage',{
+        socket.on('createMessage', (message,callback)=>{ 
+                io.to(message.room).emit('newMessage',{
                 text: message.text,
                 room: message.room,
                 from: message.sender
@@ -24,6 +25,8 @@ module.exports = function(io, Users){
             if(user){
                 io.to(user.room).emit('usersList', users.GetUsersList(user.room));
             }
-        })
+        });
     });
-}
+};
+
+

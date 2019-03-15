@@ -12,6 +12,7 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const socketIO = require('socket.io');
 const {Users} = require('./helpers/UsersClass');
+const {Global} = require('./helpers/Global');
 
 container.resolve(function( users, _, admin, home, group ){
     const app = setupExpress();
@@ -24,6 +25,8 @@ container.resolve(function( users, _, admin, home, group ){
         });
         ConfigureExpress(app);
         require('./socket/groupchat')(io, Users);
+        require('./socket/friend')(io);
+        require('./socket/globalroom')(io, Global, _);
         
 
         //Setup router
@@ -43,7 +46,7 @@ container.resolve(function( users, _, admin, home, group ){
         require('./passport/passport-google');      
 
         mongoose.Promise = global.Promise;
-        mongoose.connect('mongodb://localhost/chatapp',{useMongoClient: true});
+        mongoose.connect('mongodb://localhost:27017/chatapp',{useNewUrlParser: true});
         
         app.use(express.static('public'));
         app.use(cookieParser());
@@ -54,13 +57,12 @@ container.resolve(function( users, _, admin, home, group ){
         app.use(session({
             secret: 'thisisasecretkey',
             resave: true,
-            saveInitialized: true,
+            saveInitialized: false,
             store: new MongoStore({mongooseConnection: mongoose.connection})
         }));
         app.use(flash());
         app.use(passport.initialize());
         app.use(passport.session());
-        
         app.locals._ = _;
     }
     

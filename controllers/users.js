@@ -37,14 +37,14 @@ module.exports = function(_,passport,User){
         getFacebookLogin:passport.authenticate('facebook',{
             scope:'email'
         }),
-        getGoogleLogin:passport.authenticate('google',{
-            scope:['https://www.googleapis.com/auth/plus.login',
-            'https://www.googleapis.com/auth/plus.profile.emails.read']
-        }),
         facebookLogin:passport.authenticate('facebook',{
             successRedirect: '/home',
             failureRedirect:'/signup',
             failureFlash: true
+        }),
+        getGoogleLogin:passport.authenticate('google',{
+            scope:['https://www.googleapis.com/auth/plus.login',
+            'https://www.googleapis.com/auth/plus.profile.emails.read']
         }),
         googleLogin:passport.authenticate('google',{
             successRedirect: '/home',

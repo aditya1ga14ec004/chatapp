@@ -3,7 +3,7 @@ $(document).ready(function(){
     var room = $("#groupName").val();
     var sender = $('#sender').val();
     
-    socket.on('connect', function(){
+    socket.on('connect', function(){ 
         console.log('user is connected');
         var params = {
             room: room,
@@ -18,6 +18,11 @@ $(document).ready(function(){
         for(var i=0 ; i < users.length ; i++){
             ol.append('<p><a id="val" data-toggle="modal" data-target="#myModal">'+users[i]+'</a></p>');
         }
+        $(document).on('click', '#val', function(){
+            $("#name").text('@'+$(this).text());
+            $("#receiverName").val($(this).text());
+            $("#nameLink").attr("href","/profile/"+$(this).text());
+        });
     
         $('#numValue').text('('+ users.length +')');
         $("#users").html(ol);
@@ -44,21 +49,5 @@ $(document).ready(function(){
             $('#msg').val('')
         });
     });
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
 });

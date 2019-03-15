@@ -7,6 +7,7 @@ const simpleDependencies = [
     ['_','lodash'],['passport','passport'],['formidable','formidable'],
     ['async','async'],
     ['Club','./models/clubs'],
+    ['Users','./models/user'],
     ['aws','./helpers/AWSUpload'],
 ];
 simpleDependencies.forEach(function(val){

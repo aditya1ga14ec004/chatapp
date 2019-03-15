@@ -15,17 +15,18 @@ const  upload = multer({
         s3: mys3,
         bucket: 'mychatappbucketnumberone',
         acl: 'public-read',
-        metadata:function(req, file, cb){
+        metadata(req, file, cb){
+            
             cb(null, {fieldName:file.fieldname});
         },
-        key:function(req, file, cb){
+        key(req, file, cb){
             cb(null, file.originalname);
         }
     }),
-    rename:function(fieldname, filename){
+    rename(fieldname, filename){
         return filename.replace(/\W+/g, '-').toLowerCase();
         }
-})
+});
 
 exports.Upload = upload;
 
